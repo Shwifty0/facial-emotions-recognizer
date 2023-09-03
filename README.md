@@ -1,3 +1,3 @@
 # facial-emotions-recognizer
-This is personal project, where I used my PyTorch (Deep Learning) framework skills and created a DL app that recognized facial emotions using the ResNet18 layer model.
+This is personal a project, where I used my PyTorch (Deep Learning) framework skills and created a DL app that recognized facial emotions using the ResNet18 layer model.
 Since the datasamples were only 152, I used data augmentation to make the learning harder for the model and not overfit on the training data.
