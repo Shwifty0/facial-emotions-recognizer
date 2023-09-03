@@ -54,7 +54,7 @@ model.fc = resnetfc()
 model.load_state_dict(torch.load("FacialEmo.pth", map_location=device))
 
 # Make Predictions
-class_names = ['Anger','Contempt','Disgust','Fear','Happy','Neutral','Sad','Surprised']
+class_names = ['Angry','Contempt','Disgusted','Fearful','Happy','Neutral','Sad','Surprised']
 predict = st.button("Predict")
 if predict:
     with st.spinner("Predicting..."):
