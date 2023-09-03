@@ -34,6 +34,8 @@ def input_image():
 transformed_image = input_image()
 
 # Initialize the ResNet18 Model
+# Device agnostic code:
+device = torch.device("cpu")
 model = resnet18()
 
 # Define the modified fully connected layer:
@@ -49,7 +51,7 @@ class resnetfc(nn.Module):
 # Assign the new fc layer to the intitialized model
 model.fc = resnetfc()
 # Load the saved "State Dictionary" of the trained model in Jupyter Notebook
-model.load_state_dict(torch.load("FacialEmo.pth"))
+model.load_state_dict(torch.load("FacialEmo.pth", map_location=device))
 
 # Make Predictions
 class_names = ['Anger','Contempt','Disgust','Fear','Happy','Neutral','Sad','Surprised']
