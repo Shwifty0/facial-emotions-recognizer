@@ -8,6 +8,9 @@ from torch import nn
 from PIL import Image
 from pathlib import Path
 
+# Set tile for the app:
+st.title(":pager: Facial Emotions Recognition System:")
+
 # function for uploading image and applying transformations to it for predictions:
 def input_image():
     image_file = st.file_uploader("**Upload an image expressing an Emotion:**", type=["jpg"])
@@ -67,7 +70,6 @@ if predict:
         st.success(f"This person seems: {class_names[y_pred_label]}", icon = "🤖")
 
 # Markdowns for what the app is about
-st.title(":pager: Facial Emotions Recognition System:")
 # Post a link to the Kaggle dataset
 url = "https://www.kaggle.com/datasets/tapakah68/facial-emotion-recognition"
 st.write(f":fire: Check out the dataset over here: {url}")
