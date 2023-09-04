@@ -79,7 +79,7 @@ st.info(":joystick: The dataset has only 152 samples of facial emotions with 8 d
 st.info(f":joystick: class_names = {class_names}")
 st.info(":joystick: At the initial stages I trained the model with regular transformations and the model was overfitting")
 st.info(":joystick: In order to solve the problem of overfitting, I used PyTorch's Data Augmentation tools in order to make it hard for the model to learn new patterns and not overfit")
-st.info(":joystick: The model does not perform well with new data (Its trained on very specific type facial of features.)")
+st.info(":joystick: The model does not perform well with new data (Its trained on very specific type of facial features.)")
 
 # Profile Pic and relevant links (LinkedIn, GitHub)
 with st.sidebar:
