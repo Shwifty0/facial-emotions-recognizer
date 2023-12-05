@@ -1,12 +1,9 @@
 import io, time
 import streamlit as st
-import torch, torchvision
+import torch
 import torchvision.transforms as T
-import os
-from torchvision.models import resnet18
-from torch import nn
 from PIL import Image
-from pathlib import Path
+from model import model
 
 # function for uploading image and applying transformations to it for predictions:
 def input_image():
@@ -32,24 +29,6 @@ def input_image():
 
 
 transformed_image = input_image()
-
-# Initialize the ResNet18 Model
-model = resnet18()
-
-# Define the modified fully connected layer:
-class resnetfc(nn.Module):
-    def __init__(self):
-        super().__init__()
-        self.classifier = nn.Sequential(
-            nn.Linear(in_features=512, out_features= 8)
-        )
-    def forward(self, x):
-        return self.classifier(x)
-
-# Assign the new fc layer to the intitialized model
-model.fc = resnetfc()
-# Load the saved "State Dictionary" of the trained model in Jupyter Notebook
-model.load_state_dict(torch.load("FacialEmo.pth"))
 
 # Make Predictions
 class_names = ['Anger','Contempt','Disgust','Fear','Happy','Neutral','Sad','Surprised']
