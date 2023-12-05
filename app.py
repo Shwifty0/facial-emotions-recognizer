@@ -5,6 +5,9 @@ import torchvision.transforms as T
 from PIL import Image
 from model import model
 
+# Set tile for the app:
+st.title(":pager: Facial Emotions Recognition System:")
+
 # function for uploading image and applying transformations to it for predictions:
 def input_image():
     image_file = st.file_uploader("**Upload an image expressing an Emotion:**", type=["jpg"])
@@ -30,8 +33,28 @@ def input_image():
 
 transformed_image = input_image()
 
+# Initialize the ResNet18 Model
+# Device agnostic code:
+device = torch.device("cpu")
+model = resnet18()
+
+# Define the modified fully connected layer:
+class resnetfc(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.classifier = nn.Sequential(
+            nn.Linear(in_features=512, out_features= 8)
+        )
+    def forward(self, x):
+        return self.classifier(x)
+
+# Assign the new fc layer to the intitialized model
+model.fc = resnetfc()
+# Load the saved "State Dictionary" of the trained model in Jupyter Notebook
+model.load_state_dict(torch.load("FacialEmo.pth", map_location=device))
+
 # Make Predictions
-class_names = ['Anger','Contempt','Disgust','Fear','Happy','Neutral','Sad','Surprised']
+class_names = ['Angry','Contempt','Disgusted','Fearful','Happy','Neutral','Sad','Surprised']
 predict = st.button("Predict")
 if predict:
     with st.spinner("Predicting..."):
@@ -44,17 +67,16 @@ if predict:
         st.success(f"This person seems: {class_names[y_pred_label]}", icon = "🤖")
 
 # Markdowns for what the app is about
-st.title(":pager: Facial Emotions Recognition System:")
 # Post a link to the Kaggle dataset
 url = "https://www.kaggle.com/datasets/tapakah68/facial-emotion-recognition"
 st.write(f":fire: Check out the dataset over here: {url}")
 
 # Information about your project
 st.info(":joystick: The dataset has only 152 samples of facial emotions with 8 different classes")
-st.info(":joystick: class_names = ['Anger', 'Contempt', 'Disgust', 'Fear', 'Happy', 'Neutral', 'Sad', 'Surprised']")
+st.info(f":joystick: class_names = {class_names}")
 st.info(":joystick: At the initial stages I trained the model with regular transformations and the model was overfitting")
 st.info(":joystick: In order to solve the problem of overfitting, I used PyTorch's Data Augmentation tools in order to make it hard for the model to learn new patterns and not overfit")
-st.info(":joystick: The model does not perform well with new data (Its trained on very specific type facial of features.)")
+st.info(":joystick: The model does not perform well with new data (Its trained on very specific type of facial features.)")
 
 # Profile Pic and relevant links (LinkedIn, GitHub)
 with st.sidebar:
