@@ -3,7 +3,7 @@ import streamlit as st
 import torch
 import torchvision.transforms as T
 from PIL import Image
-from model import model
+from model import resnetfc, MODEL, DEVICE
 
 # Set tile for the app:
 st.title(":pager: Facial Emotions Recognition System:")
@@ -33,25 +33,10 @@ def input_image():
 
 transformed_image = input_image()
 
-# Initialize the ResNet18 Model
-# Device agnostic code:
-device = torch.device("cpu")
-model = resnet18()
-
-# Define the modified fully connected layer:
-class resnetfc(nn.Module):
-    def __init__(self):
-        super().__init__()
-        self.classifier = nn.Sequential(
-            nn.Linear(in_features=512, out_features= 8)
-        )
-    def forward(self, x):
-        return self.classifier(x)
-
 # Assign the new fc layer to the intitialized model
-model.fc = resnetfc()
+MODEL.fc = resnetfc()
 # Load the saved "State Dictionary" of the trained model in Jupyter Notebook
-model.load_state_dict(torch.load("FacialEmo.pth", map_location=device))
+MODEL.load_state_dict(torch.load("FacialEmo.pth", map_location= DEVICE))
 
 # Make Predictions
 class_names = ['Angry','Contempt','Disgusted','Fearful','Happy','Neutral','Sad','Surprised']
@@ -59,10 +44,10 @@ predict = st.button("Predict")
 if predict:
     with st.spinner("Predicting..."):
         time.sleep(1)
-        model.eval()
+        MODEL.eval()
         with torch.inference_mode():
             # Feed the uploaded image to the model
-            y_pred_label = torch.argmax(torch.softmax(model(transformed_image), dim = 1), dim = 1)
+            y_pred_label = torch.argmax(torch.softmax(MODEL(transformed_image), dim = 1), dim = 1)
         # Show predictions
         st.success(f"This person seems: {class_names[y_pred_label]}", icon = "🤖")
 
