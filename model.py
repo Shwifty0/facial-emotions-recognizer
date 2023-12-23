@@ -16,8 +16,3 @@ class resnetfc(nn.Module):
         )
     def forward(self, x):
         return self.classifier(x)
-
-# # Assign the new fc layer to the intitialized model
-# model.fc = resnetfc()
-# # Load the saved "State Dictionary" of the trained model in Jupyter Notebook
-# model.load_state_dict(torch.load("FacialEmo.pth", map_location=device))
