@@ -1,4 +1,4 @@
-import io, time
+import io, time, os
 import streamlit as st
 import torch
 import torchvision.transforms as T
@@ -8,10 +8,22 @@ from model import resnetfc, MODEL, DEVICE
 # Set tile for the app:
 st.title(":pager: Facial Emotions Recognition System:")
 
+def save_uploadedfile(uploadedfile):
+    try:
+        with open(os.path.join("uploaded_images",uploadedfile.name),"wb") as f:
+            f.write(uploadedfile.getbuffer())
+    except FileNotFoundError:
+        os.mkdir("uploaded_images")
+    return st.success("Saved File:{} to uploaded_images".format(uploadedfile.name))
+
+
 # function for uploading image and applying transformations to it for predictions:
 def input_image():
     image_file = st.file_uploader("**Upload an image expressing an Emotion:**", type=["jpg"])
     if image_file is not None:
+        
+        save_uploadedfile(image_file)
+        
         # Read the uploaded image as bytes
         image_bytes = image_file.read()
         
@@ -30,6 +42,8 @@ def input_image():
         # Return the transformed image tensor
         return transformed_img
 
+def predict():
+    pass
 
 transformed_image = input_image()
 
@@ -59,9 +73,7 @@ st.write(f":fire: Check out the dataset over here: {url}")
 # Information about your project
 st.info(":joystick: The dataset has only 152 samples of facial emotions with 8 different classes")
 st.info(f":joystick: class_names = {class_names}")
-st.info(":joystick: At the initial stages I trained the model with regular transformations and the model was overfitting")
-st.info(":joystick: In order to solve the problem of overfitting, I used PyTorch's Data Augmentation tools in order to make it hard for the model to learn new patterns and not overfit")
-st.info(":joystick: The model does not perform well with new data (Its trained on very specific type of facial features.)")
+
 
 # Profile Pic and relevant links (LinkedIn, GitHub)
 with st.sidebar:
