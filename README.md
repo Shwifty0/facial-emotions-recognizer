@@ -18,8 +18,6 @@ dependencies are installed on your system:
 
 ### Setup generic data
 
-Edit the *metadata.yml* file to set configuration data:
-
 ```yml
 ---
 title: Facial Emotions Recognizer
@@ -31,7 +29,7 @@ language: en-US
 
 # Introduction
 
-This is a Facial Emotion recognizer Streamlit app that takes your selfie as an input and predicts your emotions based on the categories below:
+This is a Facial Emotion recognizer Streamlit app that takes your selfie as an input and predicts your emotions based on these categories:
 ['Angry', 'Contempt', 'Disgusted', 'Fearful', 'Happy', 'Neutral', 'Sad', 'Surprised']
 
 ## Model Building Process
